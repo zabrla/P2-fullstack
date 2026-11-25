@@ -22,9 +22,11 @@ class MembroSerializer(serializers.ModelSerializer):
         fields = ['id', 'nome', 'email']
 
 class EmprestimoSerializer(serializers.ModelSerializer):
+    multa = serializers.FloatField(read_only=True)
+
     class Meta:
         model = Emprestimo
-        fields = ['id', 'exemplar', 'membro', 'data_emprestimo', 'data_devolucao_prevista', 'data_devolucao_real']
+        fields = ['id', 'exemplar', 'membro', 'data_emprestimo', 'data_devolucao_prevista', 'data_devolucao_real', 'multa']
 
 class ReservaSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard — {{ organizacao.nome }}</title>
+</head>
+<body>
+    <h1>Dashboard — {{ organizacao.nome }}</h1>
+
+    <section>
+        <h2>KPIs Gerais</h2>
+        <ul>
+            <li>Total de livros: {{ kpis.total_livros }}</li>
+            <li>Exemplares disponíveis: {{ kpis.exemplares_disponiveis }}</li>
+            <li>Total de empréstimos: {{ kpis.total_emprestimos }}</li>
+            <li>Empréstimos ativos: {{ kpis.emprestimos_ativos }}</li>
+            <li>Empréstimos atrasados: {{ kpis.emprestimos_atrasados }}</li>
+            <li>Reservas ativas: {{ kpis.reservas_ativas }}</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Ranking de Livros Mais Emprestados</h2>
+        <ol>
+            {% for item in ranking %}
+                <li>{{ item.titulo }} — {{ item.total }} empréstimos</li>
+            {% empty %}
+                <li>Nenhum livro cadastrado.</li>
+            {% endfor %}
+        </ol>
+    </section>
+
+    {% if eh_admin %}
+        <section>
+            <h2>Empréstimos por Mês</h2>
+            {{ por_mes|json_script:"dados-mes" }}
+            <canvas id="graf" width="600" height="250"></canvas>
+        </section>
+
+        <section>
+            <h2>Relatórios</h2>
+            <a href="{% url 'exportar-emprestimos-csv' %}">Exportar empréstimos (CSV)</a>
+        </section>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{% static 'js/dashboard.js' %}"></script>
+    {% endif %}
+</body>
+</html>
